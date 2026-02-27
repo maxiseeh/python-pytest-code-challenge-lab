@@ -2,25 +2,21 @@ def longest_palindromic_substring(s):
     """
     Given a string s, return the longest palindromic substring.
     """
-    n = len(s)
-    if n < 2:
+    # Handle empty string or single character
+    if len(s) < 2:
         return s
     
-    start = 0
-    max_len = 1
-
-    def expand_around_center(left, right):
-        while left >= 0 and right < n and s[left] == s[right]:
-            left -= 1
-            right += 1
-        return right - left - 1
-
-    for i in range(n):
-        len1 = expand_around_center(i, i)
-        len2 = expand_around_center(i, i + 1)
-        max_curr_len = max(len1, len2)
-        if max_curr_len > max_len:
-            max_len = max_curr_len
-            start = i - (max_len - 1) // 2
+    longest = ""
+    
+    # Check every possible substring
+    for i in range(len(s)):
+        for j in range(i, len(s)):
+            substring = s[i:j+1]
             
-    return s[start:start + max_len]
+            # Check if it's a palindrome
+            if substring == substring[::-1]:
+                # Keep track of the longest one
+                if len(substring) > len(longest):
+                    longest = substring
+    
+    return longest
